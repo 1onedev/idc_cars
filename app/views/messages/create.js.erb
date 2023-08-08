@@ -1,0 +1,9 @@
+$('#new_message').trigger("reset");
+$('#new_message_send').attr("disabled", 'disabled');
+
+$.jnoty("Сообщение успешно отправлено!", {
+    header: 'Готово',
+    sticky: true,
+    theme: 'jnoty-success',
+    icon: 'fa fa-check-circle'
+});

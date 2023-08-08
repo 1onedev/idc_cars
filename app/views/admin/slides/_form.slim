@@ -1,0 +1,39 @@
+.container
+  .text-center
+    h2 Редактор слайду
+  = form_for [:admin, @slide], html: { class: 'needs-validation form-custom' } do |f|
+    = f.file_field :image, style: 'overflow: hidden;display:none;', id: 'resource_cover'
+    .row
+      .col-5
+        h5.mb-3.font-weight-bold Загальні
+        .row
+          .col-md-12.mb-3
+            = f.label :first_title, 'Заголовок слайду'
+            = f.text_field :first_title, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :second_title, 'Підзаголовок слайду'
+            = f.text_field :second_title, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :button_title, 'Текст кнопки'
+            = f.text_field :button_title, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :button_url, 'Посилання кнопки'
+            = f.text_field :button_url, class: 'form-control', placeholder: 'https://'
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Зберегти', class: 'btn btn-primary btn-md'
+              = link_to 'Скасувати', admin_slides_path, class: 'btn btn-md btn-outline-danger ml-2'  
+      .col-7
+        h5.mb-3.font-weight-bold Зображення
+        .row
+          .col-md-12.mb-3
+            a#cover_button style="cursor:pointer"
+              - if @slide.image.exists?
+                = image_tag @slide.image.url(:index), class: 'img-fluid'
+              - else
+                = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid' 

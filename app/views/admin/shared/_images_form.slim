@@ -1,0 +1,54 @@
+.clearfix
+.col-md-12.col-sm-12.col-xs-12
+  section.box
+    .content-body style='min-height: 200px'
+      .col-md-12.m-b-20
+      = form_tag "/admin/delete_photos", method: :delete, class: 'upload_images'
+        .row
+          .col-md-12.col-sm-12.col-xs-12.m-b-5
+            h5 Фото
+            .btn-toolbar
+              = link_to 'Додати', 'javascript:;', class: 'btn btn-success btn-sm', data: { toggle: 'modal', target: '#myModal' }
+              = submit_tag 'Видалити', class: 'btn btn-danger btn-sm', id: 'delete', disabled: "#{images.blank?}", data: { confirm: 'Видалити?' }
+        .row
+          .col-md-12.col-sm-12.col-xs-12#media-contents
+            table.table
+              tbody#sortable data-resource='images' data-redirect-url="#{redirect_url}" data-resource-attribute='position'
+                - if images.empty?
+                  .col-md-12
+                    .text-center  
+                      h5 id="no-media"
+                        = 'Фото відсутні'
+                - else
+                  - images.each do |image|
+                    tr data-id="#{ image.id }"
+                      td style='width: 130px; vertical-align: middle'
+                        .form-check
+                          = label_tag nil, class: 'form-check-label'
+                            = check_box_tag "images[]", image.id, false, class: "form-check-input check-photo"
+                            |Видалити
+                          
+
+                      td
+                        = image_tag image.file.url(:thumb), class: 'img-responsive', width: '40px'
+                      td
+                        = link_to "<i class='fa fa-times icon-danger'></i>".html_safe, admin_image_path(image, redirect_url: redirect_url),  method: :delete, data: { confirm: 'Видалити?' }
+br
+br
+.modal.fade id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h4.modal-title id="myModalLabel" 
+          | Додати фото
+        button type="button" class="close" data-dismiss="modal"
+          span aria-hidden="true"
+            |&times;
+      .modal-body
+        = form_tag "/admin/images?imageable_id=#{imageable_id}&imageable_type=#{imageable_type}&redirect_url=#{redirect_url}", method: :post, class: "dropzone form", id: "media-dropzone"
+          .dz-message
+            span Перетягнiть або оберiть
+          .fallback
+            = file_field_tag "images", multiple: true
+      .modal-footer
+        = button_tag 'Закрити', class: 'btn btn-default btn-sm', data: { dismiss: 'modal' }

@@ -1,0 +1,27 @@
+.sub-banner2
+  .sub-banner-overlay
+  .container.breadcrumb-area
+    .breadcrumb-areas
+      h1 FAQ
+      ul.breadcrumbs
+        li
+          = link_to 'Головна', root_path
+        li.active Faq
+
+.faq.content-area-5
+  .container
+    .main-title.text-center
+      h1 Faq
+      p Тут ми зібрали список найбільш поширених запитань та надали розгорнуті відповіді на них
+    .row
+      .col-lg-10.offset-lg-1
+        #faq.faq-accordion
+          .card.m-b-0
+            
+            - @answers.each_with_index do |answer, index|
+              .card-header
+                a.card-title.collapsed data-parent="#faq" data-toggle="collapse" href="#collapse#{index}" 
+                  = answer.question
+              .card-block.collapse id="collapse#{index}"
+                .p-text
+                  = answer.text

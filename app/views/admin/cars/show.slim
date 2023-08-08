@@ -1,0 +1,194 @@
+.container
+  .row
+    .col-md-12.mb-3
+      .pull-left
+        h2
+          = @car.full_name
+      .pull-right
+        .btn-group
+          = link_to 'Редагувати', edit_admin_car_path(@car), class: 'btn btn-primary btn-md'
+          = link_to 'Видалити', admin_car_path(@car), method: :delete, class: 'btn btn-md btn-outline-danger ml-2', data: { confirm: "Видалити #{@car.full_name}?" }
+  .row
+    .col-md-8
+      h5.mb-3.font-weight-bold Загальні
+    
+      .row
+        .col-md-3.mb-3
+          label Марка
+          h4 
+            = @car.mark&.name
+        
+        .col-md-4.mb-3
+          label Модель
+          h4 
+            = @car.model_name
+        
+        .col-md-5.mb-3
+          label Версія
+          h4 
+            = @car.name
+
+      .row
+        .col-md-4.mb-3
+          label Категорія
+          h4 
+            = t("vehicle_type.#{@car.vehicle_type}")
+
+        .col-md-4.mb-3
+          label Тип кузова
+          h4 
+            = t("body_type.#{@car.body_type}")
+        .col-md-4.mb-3
+          label Стан
+          h4  
+            = state_tag(@car)
+      .row.mb-4
+        .col-12.mb-3
+          label Описание
+          h5
+            = @car.text.try(:html_safe)
+        .col-12.mb-3
+          label Видео
+          - if @images.empty?
+            h5.text-danger Нет видео
+          else
+            h5.text-success Видео добавлено
+
+      .row
+        .col-5
+          h5.mb-3.font-weight-bold Характеристики
+          .row
+            .col-md-12.mb-3
+              label Рік випуску
+              h4 
+                = @car.year
+          .row
+            .col-md-12.mb-3
+              label Тип палива
+              h4 
+                = t("fuel_type.#{@car.fuel_type}")
+          .row
+            .col-md-12.mb-3
+              label 
+                = "Об'єм двигуна"
+              h4 
+                = @car.engine_capacity
+          .row
+            .col-md-12.mb-3
+              label Трансміссія
+              h4 
+                = t("gearbox_type.#{@car.gearbox_type}")
+          .row
+            .col-md-12.mb-3
+              label Привід
+              h4 
+                = t("drive_type.#{@car.drive_type}")
+          .row
+            .col-md-12.mb-3
+              label Колір
+              h4 
+                = t("color.#{@car.color}")
+                =< 'Металік' if @car.metallic?
+
+          .row
+            .col-md-12.mb-3
+              label Дверей
+              h4 
+                = @car.doors_number
+          .row
+            .col-md-12.mb-3
+              label Місць
+              h4 
+                = @car.seats_number
+
+          .row
+            .col-md-12.mb-3
+              label Пробіг
+              h4 
+                = @car.mileage
+        .col-7
+          h5.mb-3.font-weight-bold Прайс
+          .row
+            .col-md-12.mb-3
+              label Вартість за кордоном
+              h4 
+                = @car.price_abroad
+          .row
+            .col-md-12.mb-3
+              label Вартість в Україні
+              h4 
+                = @car.price&.round
+          h5.mb-3.font-weight-bold Головне фото
+          .row
+            .col-md-12.mb-3
+              - if @car.cover.exists?
+                = image_tag @car.cover.url(:show), class: 'img-fluid'
+              - else
+                = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid'
+          h5.mb-3.font-weight-bold Налаштування публікації
+          .row
+            .col-md-12.mb-3
+              = published_tag(@car)
+          .row
+            .col-md-12.mb-3
+              = promo_tag(@car)
+          .row
+            .col-md-12.mb-3
+              = in_ukraine_tag(@car)
+          .row
+            .col-md-12.mb-3
+              = label_status_tag(@car)
+    .col-md-4.mb-4
+      h5.d-flex.justify-content-between.align-items-center.mb-3.font-weight-bold Калькулятор витрат
+      ul.list-group.mb-3
+        li.list-group-item.d-flex.justify-content-between.lh-condensed
+          div
+            h6.my-0.font-weight-bold Ввізне мито
+            small.text-muted#importFeeText 10 % від вартості авто
+          span.text-muted#importFeeValue
+            = @car.import_fee
+        
+        li.list-group-item.d-flex.justify-content-between.lh-condensed
+          div
+            h6.my-0.font-weight-bold Акцизне мито
+            small.text-muted#exciseFeeText
+              = @car.excise_fee_text
+          span.text-muted#exciseFeeValue
+            = @car.excise_fee
+        
+        li.list-group-item.d-flex.justify-content-between.lh-condensed
+          div
+            h6.my-0.font-weight-bold ПДВ
+            small.text-muted#vatFeeText
+              = @car.decorate.vat_fee_text
+          span.text-muted#vatFeeValue
+            = @car.vat_fee
+  
+        li.list-group-item.d-flex.justify-content-between.border-bottom-0
+          span.font-weight-bold Додаткові витрати
+        / private_fees 1, 2, 3, 4, 5
+        - %w[1 2 3 4 5].each do |fee_index|
+          li.list-group-item.d-flex.justify-content-between.lh-condensed.border-bottom-0
+            .form-group.w-100.my-0
+              = @car.public_send("private_fee_#{fee_index}")
+        li.list-group-item.d-flex.justify-content-between.bg-light
+          span.font-weight-bold Усього
+          strong#totalFeeText
+            = @car.result_fee
+      h5.mb-3.font-weight-bold SEO
+      .row
+        .col-md-12.mb-3
+          label title
+          h4 
+            = @car.seo_title
+      .row
+        .col-md-12.mb-3
+          label description
+          h4 
+            = @car.seo_description
+
+  br
+  hr
+  = render partial: '/admin/shared/images_form', locals: { images: @images, imageable_id: @car.id, imageable_type: 'Car', redirect_url: admin_car_path(@car) }
+  br
+  hr

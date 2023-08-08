@@ -1,0 +1,17 @@
+main.container role="main" 
+  .row.mt-4
+    .col-6
+      h4 Відгуки
+    .col-6
+      .pull-right
+        = link_to '+ Додати', new_admin_feedback_path, class: 'btn btn-default'
+  br
+  .row.mb-5
+    .col-md-12
+      - if @feedbacks.present?
+        table.table
+          tbody
+            = render @feedbacks
+      - else
+        h3.text-muted style="margin-top:150px"
+          .text-center Дані відсутні

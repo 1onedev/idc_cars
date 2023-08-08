@@ -1,0 +1,52 @@
+.container
+  .text-center
+    h2 Редактор
+  = form_for [:admin, @album], html: { class: 'needs-validation auto-form form-custom' } do |f|
+    = f.file_field :cover, style: 'overflow: hidden;display:none;', id: 'resource_cover'
+    .row
+      .col-md-8
+        h5.mb-3.font-weight-bold Загальні
+        .row
+          .col-md-12.mb-3
+            = f.label :name, 'Назва'
+            = f.text_field :name, class: 'form-control', required: 'required'
+        .row
+          .col-md-12.mb-3
+            = f.label :description, 'Короткий опис'
+            = f.text_area :description, class: 'form-control'
+
+        .row
+          .col-md-12.mb-3
+            = f.label :text, 'Текст'
+            = f.text_area :text, class: 'form-control ckeditor'
+
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Зберегти', class: 'btn btn-primary btn-md'
+              = link_to 'Скасувати', admin_albums_path, class: 'btn btn-md btn-outline-danger ml-2'  
+
+      .col-md-4.mb-4
+        h5.mb-3.font-weight-bold Обкладинка
+        .row
+          .col-md-12.mb-3
+            a#cover_button style="cursor: pointer"
+              - if @album.cover.exists?
+                = image_tag @album.cover.url(:thumb), class: 'img-fluid'
+              - else
+                = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid'
+        h5.mb-3.font-weight-bold SEO
+        .row
+          .col-md-12.mb-3
+            = f.label :seo_title, 'title'
+            span.text-muted.font-size-13.ml-2
+              |(макс. 37 символ)
+            = f.text_field :seo_title, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :seo_description, 'description'
+            span.text-muted.font-size-13.ml-2
+              |(мін. 120, макс. 320 символів)
+            = f.text_area :seo_description, class: 'form-control', rows: 7
+

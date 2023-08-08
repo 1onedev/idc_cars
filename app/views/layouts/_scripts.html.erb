@@ -1,0 +1,131 @@
+<script type="application/ld+json">
+	{"@context": "http://schema.org",
+            "@type": "WebSite",
+            "name": "IDC",
+            "alternateName": "IDC",
+            "url": "https://mysite.com/"}
+</script>
+<script type="application/ld+json">
+  { "@context" : "https://schema.org",
+    "@type" : "Organization",
+    "url" : "https://mysite.com/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "City, Country",
+      "postalCode": "code",
+      "streetAddress": "Street adr"
+    },
+    "contactPoint" : [
+      { "@type" : "ContactPoint",
+        "telephone" : "+111111111", 
+        "contactType" : "Відділ продажу"
+      } ] }
+</script>
+
+<% if @car.present? %>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https://mysite.com",
+          "name": "IDC",
+          "image": "<%= image_path 'logo.png' %>"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@id": "<%= catalog_custom_url %>",
+          "name": "Каталог"
+          }
+        },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "<%= catalog_custom_url %>/<%= @car.mark.slug %>",
+          "name": "<%= @car.mark.name %>"
+        }
+      },
+  {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@id": "<%= catalog_custom_url %>/<%= @car.mark.slug %>/<%= @car.model_slug %>",
+          "name": "<%= @car.model_name %>"
+        }
+      },
+  {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@id": "<%= request.original_url %>",
+          "name": "<%= @car.full_name %>",
+          "image": "<%= image_path(@car.cover.url(:show)) %>"
+        }
+      }]
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Product",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "<%= @car.rating_value %>",
+        "reviewCount": "<%= @car.review_count %>"
+      },
+      "description": "Продається автомобіль <%= @car.mark.name %> <%= @car.model_name %> <%= @car.year %>. Дивись це і інші автомобілі з Кореї на сайті mysite.com. Все автомобілі в наявності. Запрошуємо на перегляд.",
+      "name": "<%= @car.decorate.full_name %>",
+      "image": "<%= image_path(@car.cover.url(:show)) %>",
+      "offers": {
+        "@type": "Offer",
+        "availability": "http://schema.org/InStock",
+        "price": "<%= @car&.price&.to_f %>",
+        "priceCurrency": "USD"
+      } 
+    }
+  </script>
+<% end %>
+
+<% if params[:controller] == 'catalog' && @model.present? %>
+  <script type='application/ld+json'> 
+    {
+      "@context": "http://www.schema.org",
+      "@type": "product",
+      "name": "<%= @mark.name %> <%= @model.name %>",
+      "image": "<%= image_path('pexels-johan-bos-1288492.jpg') %>",
+      "description":"Придбати автомобіль марки <%= @mark.name %> <%= @model.name %> з Кореї. Приходь до нас в автосалон та вибирай найкращі пропозиції без очікування часу доставки та  оформлення документів. Багато автомобілів в Україні, вибери своє <%= @model.name %> вже сьогодні!",
+      "offers":{
+        "@type": "AggregateOffer",
+        "lowPrice" : "<%= @all_cars.pluck(:price).min %>",
+        "highPrice" : "<%= @all_cars.pluck(:price).max %>",
+        "offerCount" : "<%= @all_cars.count %>",
+        "priceCurrency" : "USD"
+      }
+    }
+  </script>
+<% elsif params[:controller] == 'catalog' && @mark.present? %>
+  <script type='application/ld+json'> 
+    {
+      "@context": "http://www.schema.org",
+      "@type": "product",
+      "name": "<%= @mark.name %>",
+      "image": "<%= image_path('pexels-johan-bos-1288492.jpg') %>",
+      "description":"Придбати автомобіль марки <%= @mark.name %> з Кореї. Приходь до нас в автосалон та вибирай найкращі пропозиції без очікування часу доставки та  оформлення документів. Багато автомобілів в Україні, вибери своє <%= @mark.name %> вже сьогодні!",
+      "offers":{
+        "@type": "AggregateOffer",
+        "lowPrice" : "<%= @all_cars.pluck(:price).min %>",
+        "highPrice" : "<%= @all_cars.pluck(:price).max %>",
+        "offerCount" : "<%= @all_cars.count %>",
+        "priceCurrency" : "USD"
+      }
+    }
+  </script>
+<% end %>

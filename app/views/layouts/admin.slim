@@ -1,0 +1,77 @@
+doctype html
+html lang="en" 
+  head
+    meta charset="utf-8"
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
+    title idc | admin
+    
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'admin', media: 'all'
+    
+    css:
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+  body
+    nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+      .container
+        = link_to 'idc', admin_cars_path, class: 'navbar-brand'
+        button.navbar-toggler aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarsExampleDefault" data-toggle="collapse" type="button" 
+          span.navbar-toggler-icon
+        #navbarsExampleDefault.collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+
+            li.nav-item.dropdown class="#{'active' if params[:controller].in?(['admin/marks', 'admin/models'])}"
+              a#dropdown01.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" Бібліотека
+              .dropdown-menu aria-labelledby="dropdown01"
+                = link_to 'Марки', admin_marks_path, class: "dropdown-item #{'active' if params[:controller] == 'admin/marks'}"
+                = link_to 'Моделі', admin_models_path, class: "dropdown-item #{'active' if params[:controller] == 'admin/models'}"
+            
+            li.nav-item class="#{'active' if params[:controller] == 'admin/cars'}"
+              = link_to 'Автомобілі', admin_cars_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/albums'}"
+              = link_to 'Доставлено', admin_albums_path, class: 'nav-link'  
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/slides'}"
+              = link_to 'Слайди', admin_slides_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/posts'}"
+              = link_to 'Статті', admin_posts_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/answers'}"
+              = link_to 'FAQ', admin_answers_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/messages'}"
+              - if Message.unviewed.present?
+                span.new-message 
+                  = Message.unviewed.count
+              = link_to 'Повідомлення', admin_messages_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/subscribers'}"
+              - if Subscriber.unviewed.present?
+                span.new-subscriber 
+                  = Subscriber.unviewed.count
+              = link_to 'Підписники', admin_subscribers_path, class: 'nav-link'
+
+            li.nav-item class="#{'active' if params[:controller] == 'admin/feedbacks'}"
+              = link_to 'Відгуки', admin_feedbacks_path, class: 'nav-link'
+    . style='margin-top: 6rem'
+      = yield
+
+    = flash_messages
+    = javascript_include_tag 'admin'
+    = yield :js

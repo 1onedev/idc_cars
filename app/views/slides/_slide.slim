@@ -1,0 +1,10 @@
+#sliderhome.carousel-item.banner-max-height.item-bg class="#{'active' if slide_counter.zero?}"
+  = image_tag slide.image.url(:index), class: 'd-block'
+  .carousel-content.container.banner-info-2.bi-2.text-left
+    h3.text-shadow 
+      = slide.first_title
+    h5.mb-30.text-shadow 
+      = slide.second_title  
+    .clearfix.text-shadow.text-center.text-md-left
+      - if slide.button_title.present? && slide.button_url.present? 
+        = link_to slide.button_title, slide.button_url, class: 'btn btn-round btn-white-lg-outline shadow-lg', target: '_blank'

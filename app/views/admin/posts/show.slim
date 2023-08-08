@@ -1,0 +1,54 @@
+.container
+  .text-center
+    h2 
+      = @post.name
+  .row
+    .col-md-8
+      h5.mb-3.font-weight-bold Загальні
+      .row
+        .col-md-6.mb-3
+          = published_tag(@post)
+      .row
+        .col-md-12.mb-3
+          label Назва
+          h4 
+            = @post.name
+      .row
+        .col-md-12.mb-3
+          label Короткий опис
+          h4 
+            = @post.description
+
+      .row
+        .col-md-12.mb-3
+          label Текст
+          = @post.text.try(:html_safe)
+
+      hr.mb-4
+      .row
+        .col-md-6.mb-3
+          .btn-group
+            = link_to 'Редагувати', edit_admin_post_path(@post), class: 'btn btn-primary btn-md'
+            = link_to 'Назад', admin_posts_path, class: 'btn btn-md btn-outline-default ml-2'  
+
+    .col-md-4.mb-4
+      h5.mb-3.font-weight-bold Обкладинка
+      .row
+        .col-md-12.mb-3
+          a#cover_button style="cursor:pointer"
+            - if @post.cover.exists?
+              = image_tag @post.cover.url(:slick), class: 'img-fluid'
+            - else
+              = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid'
+      h5.mb-3.font-weight-bold SEO
+      .row
+        .col-md-12.mb-3
+          label title
+          h4 
+            = @post.seo_title
+      .row
+        .col-md-12.mb-3
+          label description
+          h4 
+            = @post.seo_description
+

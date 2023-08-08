@@ -1,0 +1,49 @@
+.car-box-2
+  .row
+    .col-lg-5.col-md-5.col-pad
+      .car-thumbnail
+        .car-img
+          = link_to car, class: 'car-img'
+            = image_tag car.cover.url(:show), class: 'img-fluid'
+        .tags.d-flex.align-items-center
+          - if car.promo?
+            .tag.mr-3
+              |Новинка
+          - if car.in_ukraine?
+            .tag-in-ukraine
+              |В Україні
+
+    .col-lg-7.col-md-7.col-pad.align-self-center
+      .detail
+        h3.title
+          = link_to car
+            = car.decorate.full_name
+            =< car.name
+            |,
+            =< car.year
+        h5.location
+          = link_to car
+            = truncate_markup car.text, 50
+        ul.facilities-list.clearfix
+          li
+            i.flaticon-way
+            =< number_to_km car.mileage
+          li
+            i.flaticon-manual-transmission
+            =< t("gearbox_type.#{car.gearbox_type}")
+          li
+            i.flaticon-calendar-1
+            =< car.year
+          li
+            i.flaticon-fuel
+            =< t("fuel_type.#{car.fuel_type}")
+          li style="max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow:hidden;"
+            i.flaticon-car
+            =< t("body_type.#{car.body_type}")
+          li
+            i.flaticon-gear
+            =< t("color.#{car.color}")
+  = link_to car
+    .price.d-flex.justify-content-center 
+      p.p-0.m-0.text-white.mr-2 Ціна "під ключ" - 
+      = number_to_usd car.price

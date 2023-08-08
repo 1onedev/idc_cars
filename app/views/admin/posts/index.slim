@@ -1,0 +1,22 @@
+main.container role="main" 
+  .my-3
+    .row
+      .col-4
+        h4 Статті
+      .col-4
+      .col-4
+        .pull-right
+          = link_to '+ Додати', new_admin_post_path, class: 'btn btn-sm btn-outline-primary'  
+
+  br
+  .row.mb-5
+    .col-md-12
+      - if @posts.present?
+        table.table
+          tbody
+            = render @posts
+      - else
+        h3.text-muted style="margin-top:150px"
+          .text-center Дані відсутні
+  .row.justify-content-md-center.my-3
+    = paginate @posts

@@ -1,0 +1,122 @@
+.sub-banner1
+  .sub-banner-overlay
+  .container.breadcrumb-area
+    .breadcrumb-areas
+      h1 Каталог
+      ul.breadcrumbs
+        li
+          = link_to 'Головна', root_path
+        li.active Каталог
+
+.featured-car.content-area
+  .container
+    .row
+      .col-lg-4.col-md-12
+        .sidebar-left
+          .widget.advanced-search2.widget-3
+            h3.sidebar-title Пошук авто
+            .form-group
+              = select_tag :mark, options_from_collection_for_select(@filter_marks, :slug, :name, params[:mark]), id: 'filter_mark_desc', class: 'form-control', prompt: 'Марка'
+            .form-group
+              = select_tag :model, options_from_collection_for_select(@filter_models, :slug, :name, params[:model]), id: 'filter_model_desc', class: 'form-control', prompt: 'Модель'
+
+            = form_tag catalog_custom_path, method: :get, class: 'catalog-form'
+              = hidden_field_tag :sorting, params[:sorting]
+              .form-group
+                = select_tag :fuel_type, options_for_select(@fuel_types, params[:fuel_type]), class: 'form-control', prompt: 'Пальне'
+              .form-group
+                = select_tag :year_from, options_for_select(@years_range, params[:year_from]), class: 'form-control', prompt: 'рік з'
+              .form-group
+                = select_tag :year_to, options_for_select(@years_range, params[:year_to]), class: 'form-control', prompt: 'рік по'
+              .range-slider.clearfix
+                label Ціна
+                .range-slider-ui.ui-slider aria-disabled="false" data-max="25000" data-max-name="price_to" data-min="0" data-min-name="price_from" data-unit="USD" 
+                .clearfix
+              a.show-more-options data-target="#options-content" data-toggle="collapse" 
+                i.fa.fa-plus-circle
+                | Додатково
+              #options-content.collapse
+                .form-group
+                  = select_tag :body_type, options_for_select(@body_types, params[:body_type]), class: 'form-control', prompt: 'Тип кузова'
+                .form-group
+                  = select_tag :gearbox_type, options_for_select(@gearbox_types, params[:gearbox_type]), class: 'form-control', prompt: 'Трансмісія'
+                .form-group
+                  = select_tag :drive_type, options_for_select(@drive_types, params[:drive_type]), class: 'form-control', prompt: 'Привід'
+                br
+              .form-group.mb-0
+                = button_tag name: 'commit', type: 'submit', class: 'search-button btn'
+                  | Пошук
+      .col-lg-8.col-md-12
+        .option-bar.clearfix
+          .sorting-options2
+            = form_tag catalog_custom_path, id: 'sort-form', method: :get
+              = hidden_field_tag :mark, params[:mark]
+              = hidden_field_tag :model, params[:model]
+              = hidden_field_tag :fuel_type, params[:fuel_type]
+              = hidden_field_tag :year_from, params[:year_from]
+              = hidden_field_tag :year_to, params[:year_to]
+              = hidden_field_tag :price_from, params[:price_from]
+              = hidden_field_tag :price_to, params[:price_to]
+              = hidden_field_tag :gearbox_type, params[:gearbox_type]
+              = hidden_field_tag :drive_type, params[:drive_type]
+              = hidden_field_tag :body_type, params[:body_type]
+              = hidden_field_tag :color, params[:color]
+
+              .form-group
+                = select_tag :sorting, options_for_select(@sort_types, params[:sorting]), class: 'form-control', prompt: 'Сортування', onchange: "$('#sort-form').submit()"
+        - case
+          - when @mark && @model || @model
+            .main-title#catalog
+              h1 Автомобілі #{@mark.name} #{@model.name} з Кореї
+          - when @mark
+            .main-title#catalog
+              h1 Автомобілі #{@mark.name} з Кореї
+          - else
+            .main-title#catalog
+              h1 Автомобілі з Кореї в наявності та під замовлення
+        = render collection: @cars, partial: 'catalog/car', as: :car
+        = render 'buttons/newcar'
+
+        .pagination-box.text-center
+          nav aria-label="Page navigation"
+            = paginate @cars
+
+- content_for :js
+  javascript:
+    $(".range-slider-ui").each(function () {
+        var minRangeValue = $(this).attr('data-min');
+        var maxRangeValue = $(this).attr('data-max');
+        var minName = $(this).attr('data-min-name');
+        var maxName = $(this).attr('data-max-name');
+        var unit = $(this).attr('data-unit');
+
+        $(this).append("" +
+            "<span class='min-value'></span> " +
+            "<span class='max-value'></span>" +
+            "<input class='current-min' type='hidden' name='"+minName+"'>" +
+            "<input class='current-max' type='hidden' name='"+maxName+"'>"
+        );
+        $(this).slider({
+            range: true,
+            min: minRangeValue,
+            max: maxRangeValue,
+            values: [#{params[:price_from] || 0}, #{params[:price_to] || 25000}],
+            slide: function (event, ui) {
+                event = event;
+                var currentMin = parseInt(ui.values[0], 10);
+                var currentMax = parseInt(ui.values[1], 10);
+                $(this).children(".min-value").text( currentMin + " " + unit);
+                $(this).children(".max-value").text(currentMax + " " + unit);
+                $(this).children(".current-min").val(currentMin);
+                $(this).children(".current-max").val(currentMax);
+            }
+        });
+
+        var currentMin = parseInt($(this).slider("values", 0), 10);
+        var currentMax = parseInt($(this).slider("values", 1), 10);
+        $(this).children(".min-value").text( currentMin + " " + unit);
+        $(this).children(".max-value").text(currentMax + " " + unit);
+        $(this).children(".current-min").val(currentMin);
+        $(this).children(".current-max").val(currentMax);
+    });
+

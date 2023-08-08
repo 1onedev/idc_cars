@@ -1,0 +1,144 @@
+doctype html
+html lang="uk" 
+  head
+    meta content="width=device-width, initial-scale=1.0" name="viewport"
+    meta charset="utf-8"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all'
+    = display_meta_tags
+    = display_robots_meta_tags
+    = display_pagination_meta_tags
+
+    link rel="icon" sizes="32x32" type="image/jpg" href='/favicon/favicon-32x32.jpg' 
+    link rel="icon" sizes="16x16" type="image/jpg" href='/favicon/favicon-16x16.jpg'
+    link rel="apple-touch-icon" sizes="180x180" href='/favicon/apple-touch-icon.jpg'
+
+    link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700%7CUbuntu:300,400,700" rel="stylesheet"
+    link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,300,700" rel="stylesheet" type="text/css"
+
+  body
+    header.main-header.sticky-header.header-with-top
+      #info-for-bayer.d-none.d-md-flex.align-items-center.justify-content-center
+        ul
+          li
+            i.flaticon-pin.mr-1
+            = link_to 'City, Street adr', contacts_path
+          / li
+          /   i.flaticon-phone.mr-1
+          /   a href="tel:+111111111" +111111111
+          / li
+          /   i.flaticon-fax.mr-1
+          /   a href="tel:+111111111" +111111111
+      .container
+        nav.navbar.navbar-expand-lg.navbar-light
+          = link_to root_path, class: 'navbar-brand company-logo'
+            = image_tag 'black-logo.png'
+          button.navbar-toggler aria-controls="navbar" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbar" data-toggle="collapse" type="button" 
+            span.fa.fa-bars
+          #navbar.navbar-collapse.collapse.w-100
+            ul.navbar-nav.ml-auto
+              li.nav-item class="#{'active' if params[:controller] == 'home'}"
+                = link_to 'Головна', root_path, class: 'nav-link'
+              li.nav-item class="#{'active' if params[:controller] == 'catalog'}"
+                = link_to 'Каталог', catalog_custom_path, class: 'nav-link'
+              li.nav-item class="#{'active' if params[:action] == 'faq'}"
+                = link_to 'FAQ', faq_path, class: 'nav-link'
+              li.nav-item class="#{'active' if params[:controller] == 'albums'}"
+                = link_to 'Доставлено', albums_path, class: 'nav-link'
+              li.nav-item class="#{'active' if params[:controller] == 'posts'}"
+                = link_to 'Статті', posts_path, class: 'nav-link'  
+              li.nav-item class="#{'active' if params[:action] == 'contacts'}"
+                = link_to 'Контакти', contacts_path, class: 'nav-link'
+
+    = yield
+
+    footer.footer
+      .container.footer-inner
+        .row
+          .col-xl-3.col-lg-3.col-md-6.col-sm-6
+            .footer-item.clearfix
+              = image_tag 'logo.png', class: 'f-logo'
+              ul.contact-info
+                li
+                  i.flaticon-pin
+                  |City, Street adr
+                li
+                  i.flaticon-mail
+                  a href="mailto:info@mysite.com" info@mysite.com
+                / li
+                /   i.flaticon-phone
+                /   a href="tel:+111111111" +111111111
+                / li
+                /   i.flaticon-fax
+                /   a href="tel:+111111111" +111111111
+              .clearfix
+              .social-list-2
+                ul
+                  li
+                    a.facebook-bg href="#" 
+                      i.fab.fa-facebook
+                  li
+                    a.twitter-bg href="#" 
+                      i.fab.fa-instagram
+                  / li
+                  /   a.google-bg href="https://telegram.me/mySite" target="_blank"
+                  /     i.fab.fa-telegram-plane
+                  / li
+                  /   a.linkedin-bg href="viber://chat?number=%2B111111111" target="_blank"
+                  /     i.fab.fa-viber
+          .col-xl-2.col-lg-2.col-md-6.col-sm-6
+            .footer-item
+              h4
+                | Сторінки
+              ul.links
+                li
+                  = link_to 'Головна', root_path
+                li
+                  = link_to 'Каталог', catalog_custom_path
+                li
+                  = link_to 'FAQ', faq_path
+                li
+                  = link_to 'Галерея', albums_path
+                li
+                  = link_to 'Статті', posts_path
+                li
+                  = link_to 'Контакти', contacts_path
+          .col-xl-4.col-lg-4.col-md-6.col-sm-6
+            .recent-posts.footer-item
+              h4 Статті
+              - footer_posts.limit(3).each do |post|
+                .media.mb-4
+                  = link_to post, class: 'pr-3'
+                    = image_tag post.cover.url(:thumb), class: 'media-object'
+                  .media-body.align-self-center
+                    h5
+                      = link_to post.name, post
+                    .listing-post-meta
+                      = link_to post
+                        i.fa.fa-calendar
+                        =< post.created_at.strftime('%d.%m.%Y')
+          .col-xl-3.col-lg-3.col-md-6.col-sm-6
+            .footer-item.clearfix
+              h4 Підписка
+              .Subscribe-box
+                p Ви можете підписатись на розсилку та бути в курсі всіх наших новин!
+                = form_for Subscriber.new, remote: true, html: { class: 'form-inline', id: 'new_subscriber' } do |f|
+                  = f.email_field :email, class: 'form-control mb-sm-0', placeholder: 'Email адрес', required: 'required'
+                  = f.button class: 'btn', id: 'new_subscriber_send'
+                    i.fa.fa-paper-plane
+
+          .col-xl-12.col-lg-12
+            p.copy.sub-footer
+              | © 
+              =<> Time.zone.now.year
+              | idc
+    
+    = javascript_include_tag 'application'
+    script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"
+
+    = render '/layouts/scripts'
+
+    = yield :js
+
+    script type="text/javascript" src="//code.jivosite.com/widget/mySiteCode" async

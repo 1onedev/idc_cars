@@ -1,0 +1,12 @@
+.slick-slide-item
+  .blog-4
+    .blog-photo
+      = link_to post
+        = image_tag post.cover.url(:slick), class: 'img-fluid'
+      .date-box-2
+        = post.created_at.strftime('%d %b')
+    .detail
+      h3
+        = link_to post.name, post
+      p
+        = post.description

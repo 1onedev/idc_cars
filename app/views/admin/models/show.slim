@@ -1,0 +1,23 @@
+.container
+  .row
+    .col-md-12.mb-3
+      .pull-left
+        h2
+          = @model.name
+      .pull-right
+        .btn-group
+          = link_to 'Редагувати', edit_admin_model_path(@model), class: 'btn btn-primary btn-md'
+          / = link_to 'Удалить', admin_model_path(@model), method: :delete, class: 'btn btn-md btn-outline-danger ml-2', data: { confirm: "Удалить #{@model.name}?" }
+  .row
+    .col-5
+      .row
+        .col-md-12.mb-3
+          label Назва
+          h4
+            = @model.name
+      .row
+        .col-md-12.mb-3
+          label Марка
+          h4 
+            = @model.mark&.name    
+      hr.mb-4

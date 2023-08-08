@@ -1,0 +1,24 @@
+main.container role="main" 
+  .row.mt-4
+    .col-6
+      h4 Доступні моделі авто
+    .col-4
+      = form_tag nil, method: :get, class: 'form-inline my-2 my-md-0' do
+        = text_field_tag :q, params[:q], class: 'form-control form-control-sm mr-2', placeholder: 'Пошук'
+        = button_to nil, class: 'button-submit-search'
+          i.fa.fa-search
+    .col-2
+      .pull-right
+        = link_to '+ Додати', new_admin_model_path, class: 'btn btn-default'
+  br
+  .row.mb-5
+    .col-md-12
+      - if @models.present?
+        table.table
+          tbody
+            = render @models
+      - else
+        h3.text-muted style="margin-top:150px"
+          .text-center Дані відсутні
+  .row.justify-content-md-center.my-3
+    = paginate @models

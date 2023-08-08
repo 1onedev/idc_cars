@@ -1,0 +1,29 @@
+main.container role="main" 
+  .my-3
+    .row
+      .col-6
+        h4 Автомобілі
+      .col-4
+        = form_tag nil, method: :get, class: 'form-inline my-2 my-md-0' do
+          = text_field_tag :q, params[:q], class: 'form-control form-control-sm mr-2', placeholder: 'Пошук'
+          = button_to nil, class: 'button-submit-search'
+            i.fa.fa-search
+      .col-2
+        .pull-right
+          = link_to '+ Додати', new_admin_car_path, class: 'btn btn-sm btn-outline-primary'  
+
+  .my-3.p-3.bg-white.rounded.shadow-sm
+    - @cars.each do |car|
+      = link_to admin_car_path(car)
+        .media.text-muted.pt-3
+          = image_tag car.cover.url(:thumb), class: 'img-fluid mr-2 rounded'
+          p.media-body.pb-3.mb-0.small.lh-125.border-bottom.border-gray
+            strong.d-block class="#{published_class(car)}"
+              = car.decorate.full_name
+              =< car.name
+              - unless car.published?
+                =< '(Не опублікован)'
+            = car.decorate.full_desc
+      
+    .row.justify-content-md-center.my-3
+      = paginate @cars

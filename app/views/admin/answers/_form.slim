@@ -1,0 +1,19 @@
+.container
+  h2 Редактор FAQ
+  = form_for [:admin, @answer], html: { class: 'needs-validation form-custom' } do |f|
+    .row
+      .col-12.col-md-8
+        .row
+          .col-md-12.mb-3
+            = f.label :question, 'Запитання'
+            = f.text_field :question, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :text, 'Відповідь'
+            = f.text_area :text, class: 'form-control'
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Зберегти', class: 'btn btn-primary btn-md'
+              = link_to 'Скасувати', admin_slides_path, class: 'btn btn-md btn-outline-danger ml-2'  

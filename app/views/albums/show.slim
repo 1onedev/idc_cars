@@ -1,0 +1,29 @@
+.sub-banner3
+  .sub-banner-overlay
+    .container.breadcrumb-area
+      .breadcrumb-areas
+        h1
+          = @album.name
+        ul.breadcrumbs
+          li
+            = link_to 'Доставлено', albums_path
+          li.active
+            = @album.name
+
+.photo-gallery.content-area-13
+  .container
+    .main-title.mt2
+      p
+        = @album.text.try(:html_safe)
+      .list-inline-listing
+    .row.filter-portfolio
+      .cars
+        - @album.images.each do |image|
+          .col-lg-4.col-md-6.col-sm-12.filtr-item.col-pad data-category="1" 
+            .portfolio-item
+              = link_to image_path(image.file.url), title: ''
+                = image_tag image.file.url(:show), class: 'img-fluid'                
+              .portfolio-content
+                .portfolio-content-inner
+                  p
+                    i.lnr.lnr-magnifier

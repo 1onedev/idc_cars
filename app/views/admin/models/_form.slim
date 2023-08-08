@@ -1,0 +1,21 @@
+.container
+  h2 Редактор модели
+  = form_for [:admin, @model], html: { class: 'needs-validation form-custom' } do |f|
+    .row
+      .col-5
+        .row
+          .col-md-12.mb-3
+            = f.label :mark_id, 'Марка'
+            = f.collection_select :mark_id, Mark.order(name: :asc), :id, :name, { include_blank: 'Выберите марку' }, { class: 'custom-select d-block w-100', required: :required }
+            .invalid-feedback
+              | Выберите марку.
+        .row
+          .col-md-12.mb-3
+            = f.label :name, 'Название'
+            = f.text_field :name, class: 'form-control'
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Сохранить', class: 'btn btn-primary btn-md'
+              = link_to 'Отмена', admin_models_path, class: 'btn btn-md btn-outline-danger ml-2'  

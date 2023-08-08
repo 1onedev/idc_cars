@@ -1,0 +1,18 @@
+meta charset="utf-8"
+meta name="viewport" content="width=device-width, initial-scale=1"
+
+= stylesheet_link_tag 'admin', media: 'all'
+= csrf_meta_tags
+
+body
+  .login-content
+    .login-form
+      = form_for resource, as: resource_name, url: session_path(resource_name), html: { class: 'form form-body' } do |f|
+        .label-row
+          label for="login-name" email
+        = devise_error_messages!
+        = f.email_field :email, required: true, class: 'form-control'
+        .label-row
+          label for="login-password" password
+        = f.password_field :password, required: true, class: 'form-control'
+        = f.submit 'вход', class: 'btn btn-primary'

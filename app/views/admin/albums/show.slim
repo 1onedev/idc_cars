@@ -1,0 +1,55 @@
+.container
+  .text-center
+    h2 
+      = @album.name
+  .row
+    .col-md-8
+      h5.mb-3.font-weight-bold Загальні
+      .row
+        .col-md-12.mb-3
+          label Назва
+          h4 
+            = @album.name
+      .row
+        .col-md-12.mb-3
+          label Коротокий опис
+          h4 
+            = @album.description
+
+      .row
+        .col-md-12.mb-3
+          label Текст
+          = @album.text.try(:html_safe)
+
+      hr.mb-4
+      .row
+        .col-md-6.mb-3
+          .btn-group
+            = link_to 'Редагувати', edit_admin_album_path(@album), class: 'btn btn-primary btn-md'
+            = link_to 'Назад', admin_albums_path, class: 'btn btn-md btn-outline-default ml-2'  
+
+    .col-md-4.mb-4
+      h5.mb-3.font-weight-bold Зображення
+      .row
+        .col-md-12.mb-3
+          a#cover_button style="cursor:pointer"
+            - if @album.cover.exists?
+              = image_tag @album.cover.url(:thumb), class: 'img-fluid'
+            - else
+              = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid'
+      h5.mb-3.font-weight-bold SEO
+      .row
+        .col-md-12.mb-3
+          label title
+          h4 
+            = @album.seo_title
+      .row
+        .col-md-12.mb-3
+          label description
+          h4 
+            = @album.seo_description
+  br
+  hr
+  = render partial: '/admin/shared/images_form', locals: { images: @images, imageable_id: @album.id, imageable_type: 'Album', redirect_url: admin_album_path(@album) }
+  br
+  hr

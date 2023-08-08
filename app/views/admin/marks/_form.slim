@@ -1,0 +1,15 @@
+.container
+  h2 Редактор марки
+  = form_for [:admin, @mark], html: { class: 'needs-validation form-custom' } do |f|
+    .row
+      .col-5
+        .row
+          .col-md-12.mb-3
+            = f.label :name, 'Назва'
+            = f.text_field :name, class: 'form-control'
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Зберегти', class: 'btn btn-primary btn-md'
+              = link_to 'Скасувати', admin_marks_path, class: 'btn btn-md btn-outline-danger ml-2'  

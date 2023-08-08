@@ -1,0 +1,13 @@
+tr data-id="#{ slide.id }"
+  td 
+    = slide.position
+  td 
+    = image_tag slide.image.url(:thumb), class: 'img-responsive', width: 75
+  td 
+    = slide.first_title
+  td 
+    = slide.created_at.to_date
+  td
+    = link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_slide_path(slide)
+  td
+    = link_to "<i class='fa fa-times icon-danger '></i>".html_safe, [:admin, slide],  method: :delete, data: { confirm: 'Видалити?' }

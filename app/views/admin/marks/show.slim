@@ -1,0 +1,18 @@
+.container
+  .row
+    .col-md-12.mb-3
+      .pull-left
+        h2
+          = @mark.name
+      .pull-right
+        .btn-group
+          = link_to 'Редагувати', edit_admin_mark_path(@mark), class: 'btn btn-primary btn-md'
+          / = link_to 'Удалить', admin_mark_path(@mark), method: :delete, class: 'btn btn-md btn-outline-danger ml-2', data: { confirm: "Удалить #{@mark.name}?" }
+  .row
+    .col-5
+      .row
+        .col-md-12.mb-3
+          label Назва
+          h4
+            = @mark.name
+      hr.mb-4

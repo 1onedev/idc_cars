@@ -1,0 +1,8 @@
+.nowcar
+  .sidebar-left.widget
+    h4 Немає потрібного автомобіля? Заповни, ми повідомимо як з'явиться!
+    = form_for Message.new, remote: true, html: { class: 'form-inline' } do |f|
+      = hidden_field_tag :custom_text, params.to_json
+      = f.text_field :title, class: 'form-control mb-sm-0', placeholder: 'Номер телефона', required: 'required'
+      = f.button class: 'btn'
+        i.fa.fa-paper-plane

@@ -1,0 +1,43 @@
+.slick-slide-item
+  .car-box-4.category
+    .tags.d-flex.align-items-center
+      - if car.promo?
+        .tag.mr-3
+          |Новинка
+      - if car.in_ukraine?
+        .tag-in-ukraine
+          |В Україні
+    = link_to car
+      .category_bg_box.category_long_bg.bg-img-3 style="background-image: url(#{image_path(car.cover.url(:promo))})"
+      = link_to car, class: 'category-overlay'
+        .category-overlay
+          .category-content 
+            = link_to car, class: 'category-content'
+              .lo-text.clearfix
+                h3
+                  = link_to car
+                    = car.decorate.full_name
+                    |,
+                    =< car.year
+                h5
+                  = number_to_usd car.price
+                ul.facilities-list.clearfix
+                  = link_to car
+                    li
+                      i.flaticon-way
+                      =< number_to_km car.mileage
+                    li
+                      i.flaticon-manual-transmission
+                      =< t("gearbox_type.#{car.gearbox_type}")
+                    li
+                      i.flaticon-calendar-1
+                      =< car.year
+                    li
+                      i.flaticon-fuel
+                      =< t("fuel_type.#{car.fuel_type}")
+                    li style="max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow:hidden;"
+                      i.flaticon-car
+                      =< t("body_type.#{car.body_type}")
+                    li
+                      i.flaticon-gear
+                      =< t("color.#{car.color}")

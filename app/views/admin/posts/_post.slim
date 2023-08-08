@@ -1,0 +1,13 @@
+tr
+  td class="#{published_class(post)}"
+    = post.name
+  td
+    = post.description
+  td 
+    = post.created_at.strftime('%d.%m.%Y %H:%M')
+  td
+    .pull-right
+      = link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_post_path(post)
+  td
+    .pull-right
+      = link_to "<i class='fa fa-times icon-danger '></i>".html_safe, [:admin, post],  method: :delete, data: { confirm: 'Удалить?' }

@@ -1,0 +1,18 @@
+.sub-banner4
+  .sub-banner-overlay
+  .container.breadcrumb-area
+    .breadcrumb-areas
+      h1 Статті
+      ul.breadcrumbs
+        li
+          = link_to 'Головна', root_path
+        li.active Статті
+
+.blog-body.content-area
+  .container
+    .row
+      = render @posts
+
+    .pagination-box.hidden-mb-45.text-center
+      nav aria-label=("Page navigation example") 
+        = paginate @posts

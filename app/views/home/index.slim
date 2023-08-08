@@ -1,0 +1,208 @@
+#banner.banner
+  #carouselIndicators.carousel.slide 
+    .carousel-inner.banner-slider-inner.text-center
+      = render @slides
+      
+    .search-box-4
+      
+      .form-group
+        = select_tag :mark, options_from_collection_for_select(@filter_marks, :slug, :name, nil), id: 'filter_mark_desc', class: 'form-control', prompt: 'Марка'
+      .form-group
+        = select_tag :model, options_from_collection_for_select(Model.none, :slug, :name, nil), id: 'filter_model_desc', class: 'form-control', prompt: 'Модель'
+
+      = form_tag catalog_custom_path, method: :get, class: 'catalog-form'
+        .form-group
+          = select_tag :fuel_type, options_for_select(@fuel_types, nil), class: 'form-control', prompt: 'Пальне'
+        .form-group
+          = select_tag :year_from, options_for_select(@years_range, nil), class: 'form-control', prompt: 'рік з'
+        .form-group
+          = select_tag :year_from, options_for_select(@years_range, nil), class: 'form-control', prompt: 'рік по'
+        .form-group
+          = button_tag name: 'commit', type: 'submit', class: 'button btn btn-block button-theme btn-md'
+            i.fa.fa-search
+            | Пошук
+
+    ol.carousel-indicators
+      - @slides.each_with_index do |slide, index|
+        li class="#{'active' if index.zero?}" data-slide-to="#{index}" data-target="#carouselIndicators" 
+
+.search-box-2.sb-2
+  .container
+    .row
+      .col-lg-12
+        .inline-search-area
+          .row.row-3
+          
+            .col-md-6.col-sm-6.mb-3
+              = select_tag :mark, options_from_collection_for_select(@filter_marks, :slug, :name, nil), id: 'filter_mark_mob', class: 'form-control form-control-sm', prompt: 'Марка', style: 'width: 100%'
+            .col-md-6.col-sm-6.mb-3
+              = select_tag :model, options_from_collection_for_select(Model.none, :slug, :name, nil), id: 'filter_model_mob', class: 'form-control form-control-sm', prompt: 'Модель', style: 'width: 100%'
+
+            = form_tag catalog_custom_path, method: :get, class: 'form-inline catalog-form', style: 'width: 100%'
+              .col-md-6.col-sm-6.mb-3
+                = select_tag :fuel_type, options_for_select(@fuel_types, nil), class: 'form-control form-control-sm', style: 'width: 100%', prompt: 'Пальне'
+              .col-md-6.col-sm-6.mb-3
+                = select_tag :year_from, options_for_select(@years_range, nil), class: 'form-control form-control-sm', style: 'width: 100%', prompt: 'рік з'
+              .col-md-6.col-sm-6.mb-3
+                = select_tag :year_to, options_for_select(@years_range, nil), class: 'form-control form-control-sm', style: 'width: 100%', prompt: 'рік по'
+              .col-md-12
+                = button_tag name: 'commit', type: 'submit', class: 'btn white-btn btn-search btn-block'
+                  i.fa.fa-search
+                  strong Пошук 
+
+.featured-car.content-area-5
+  .container
+    .main-title
+      h1 Автомобілі з Кореї
+      p Наші новинки! Ми намагаємося часто і швидко підбирати нові та цікаві авто!
+    .slick-slider-area.clearfix
+      .row.slick-carousel data-slick="#{@promo_slick_settings.to_json}" 
+        = render collection: @promo_cars, partial: 'home/promo_cars', as: :car
+      .slick-prev.slick-arrow-buton
+        i.fa.fa-angle-left
+      .slick-next.slick-arrow-buton
+        i.fa.fa-angle-right
+
+.advantages-2.content-area.bg-grea-3
+  .container
+    .main-title.text-center
+      h1 Наші переваги
+      p Ми цінуємо всіх наших клієнтів!
+    .row
+      .col-lg-3.col-md-6.col-sm-6
+        .advantages-box-2
+          .icon
+            i.fas.fa-key
+          .detail
+            h5 Доставка «Під ключ»! 
+            p Вам немає необхідності занурюватися у процес покупки, оформлення та транспортування – все це ми беремо на себе!
+      .col-lg-3.col-md-6.col-sm-6
+        .advantages-box-2.mt-50
+          .icon
+            i.fas.fa-search-dollar
+          .detail
+            h5 Пошук оптимальних варіантів
+            p Підберемо найкращі варіанти авто під Ваш бюджет та потреби
+      .col-lg-3.col-md-6.col-sm-6
+        .advantages-box-2
+          .icon
+            i.fas.fa-tools
+          .detail
+            h5 СТО 
+            p Допоможемо з ремонтом пошкодженого автомобіля
+      .col-lg-3.col-md-6.col-sm-6
+        .advantages-box-2.mt-50
+          .icon
+            i.fas.fa-star
+          .detail
+            h5 Ексклюзивність
+            p Купівля найкращих авто завдяки наявності представників на приватних аукціонах
+.latest-offers.categories.content-area-13
+  .container
+    .main-title.text-center
+      h1 Доставлено
+    .row.row-2
+      .col-lg-4.col-md-12
+        .row
+          .col-md-6.col-lg-12.col-pad
+            - if @images.first.present?
+              .category 
+                .category_bg_box.cat-1-bg style="background-image: url(#{image_path @images.first.file.url(:index_1)})"
+                  .category-overlay
+                    .category-content
+                      = link_to album_path(@images.first.imageable), class: 'category-content' 
+                        .lo-text.clearfix
+                          h3.category-title
+                            = link_to @images.first.imageable.name, album_path(@images.first.imageable)    
+          .col-md-6.col-lg-12.col-pad
+            - if @images.first.present?
+              .category
+                .category_bg_box.cat-3-bg style="background-image: url(#{image_path @images.second.file.url(:index_1)})"
+                  .category-overlay
+                    .category-content
+                      = link_to album_path(@images.second.imageable), class: 'category-content' 
+                        .lo-text.clearfix
+                          h3.category-title
+                            = link_to @images.second.imageable.name, album_path(@images.second.imageable)
+      .col-lg-4.col-md-6.col-pad
+        - if @images.third.present?
+          .category
+            .category_bg_box.category_long_bg.cat-4-bg style="background-image: url(#{image_path @images.third.file.url(:index_2)})"
+              .category-overlay
+                .category-overlay
+                  .category-content
+                    = link_to album_path(@images.third.imageable), class: 'category-content' 
+                      .lo-text.clearfix
+                        h3.category-title
+                          = link_to @images.third.imageable.name, album_path(@images.third.imageable)
+      .col-lg-4.col-md-6
+        .row
+          .col-md-12.col-lg-12.col-pad
+            - if @images.fourth.present?
+              .category
+                .category_bg_box.cat-2-bg style="background-image: url(#{image_path @images.fourth.file.url(:index_1)})"
+                  .category-overlay
+                    .category-content
+                      = link_to album_path(@images.fourth.imageable), class: 'category-content' 
+                        .lo-text.clearfix
+                          h3.category-title
+                            = link_to @images.fourth.imageable.name, album_path(@images.fourth.imageable)
+          .col-md-12.col-lg-12.col-pad
+            - if @images.fifth.present?
+              .category
+                .category_bg_box.cat-5-bg style="background-image: url(#{image_path @images.fifth.file.url(:index_1)})"
+                  .category-overlay
+                    .category-content
+                      = link_to album_path(@images.fifth.imageable), class: 'category-content' 
+                        .lo-text.clearfix
+                          h3.category-title
+                            = link_to @images.fifth.imageable.name, album_path(@images.fifth.imageable)
+.testimonial-2.content-area-5
+  .container
+    .row
+      .col-lg-4.align-self-center
+        .main-title
+          h1 Відгуки наших клієнтів
+          p Нам важлива ваша думка. Ми ростемо заради вас. Поділіться вашим досвідом покупки авто у нас.
+          = link_to 'Контакти', contacts_path, class: 'btn btn-round btn-white-lg-outline'
+      .col-lg-7.offset-lg-1
+        .slick-slider-area
+          .row.slick-carousel data-slick="@feedbacks_slick_settings.to_json"
+            - @feedbacks.each do |feedback| 
+              .slick-slide-item
+                .testimonial-inner
+                  .text-box
+                    p
+                      = feedback.text
+                    .rating
+                      - feedback.stars.times do
+                        i.fa.fa-star
+                      - feedback.unfilled_stars.times do  
+                        i.fa.fa-star-o
+                      span
+                    p
+                      small
+                        = feedback.name
+          .slick-prev.slick-arrow-buton
+            i.fa.fa-angle-left
+          .slick-next.slick-arrow-buton
+            i.fa.fa-angle-right
+
+
+.blog.content-area
+  .container
+    .main-title
+      h1 Статті
+      p Підбірка актуальних автомобільних новин!
+    .slick-slider-area.clearfix
+      .row.slick-carousel data-slick="#{@posts_slick_settings.to_json}" 
+        = render collection: @posts, partial: 'home/posts', as: :post
+
+.intro-section
+  .container
+    .row
+      .col-lg-9.col-md-8.col-sm-12
+        .intro-text
+          h3 Залишились питання?
+      .col-lg-3.col-md-4.col-sm-12
+        = link_to "зв'язатися", contacts_path, class: 'btn btn-md'

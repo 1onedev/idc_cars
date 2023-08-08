@@ -1,0 +1,61 @@
+.sub-banner4
+  .sub-banner-overlay
+    .container.breadcrumb-area
+      .breadcrumb-areas
+        h1
+          = @post.name
+        ul.breadcrumbs
+          li
+            = link_to 'Статті', posts_path
+          li.active = @post.name
+
+.blog-body.content-area-4
+  .container
+    .row
+      .col-lg-8.col-md-12
+
+        .blog-1.blog-big.mb-50
+          .blog-photo
+            = image_tag @post.cover.url, class: 'img-fluid'
+          .detail
+            h3
+              = @post.name
+            = @post.text.try(:html_safe)
+
+
+      .col-lg-4.col-md-12
+        .sidebar-right
+          .widget.recent-posts
+            h3.sidebar-title Статті
+            - @recent_posts.each do |post|
+              .media.mb-4
+                = link_to post, class: 'pr-3'
+                  = image_tag post.cover.url(:thumb), class: 'media-object'
+                .media-body.align-self-center
+                  h5
+                    = link_to post.name, post
+                  .listing-post-meta
+                    = link_to post
+                      i.fa.fa-calendar
+                      =< post.created_at.strftime('%d.%m.%Y')
+
+          .posts-by-category.widget
+            h3.sidebar-title Популярні марки авто
+            .s-border
+            ul.list-unstyled.list-cat
+              - @filter_marks.each do |mark|
+                li
+                  = link_to "/catalog/#{mark.slug}"
+                    = mark.name
+                    span
+                      =< "(#{mark.cars_count})"
+
+          .widget.tags-box.widget-3
+            h3.sidebar-title  Популярні моделі авто
+            .s-border
+            ul.tags
+              - @filter_models.each do |model|
+                li
+                  = link_to "/catalog/#{model.mark.slug}/#{model.slug}"
+                    = model.name
+                |&nbsp;

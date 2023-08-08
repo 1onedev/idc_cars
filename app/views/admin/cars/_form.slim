@@ -1,0 +1,192 @@
+.container
+  .text-center
+    h2 Редактор авто
+  = form_for [:admin, @car], html: { class: 'needs-validation auto-form form-custom' } do |f|
+    = f.file_field :cover, style: 'overflow: hidden;display:none;', id: 'resource_cover'
+    - if @car.new_record?
+      = f.file_field :rating_value, value: rand(4.5..5.0).round(1)
+      = f.file_field :review_count, value: rand(3..14)
+    .row
+      .col-md-8
+        h5.mb-3.font-weight-bold Загальні
+        .row
+          .col-md-3.mb-3
+            = f.label :mark_id, 'Марка'
+            = f.collection_select :mark_id, Mark.order(name: :asc), :id, :name, { include_blank: 'Оберіть марку' }, { class: 'custom-select d-block w-100', required: :required }
+            .invalid-feedback
+              | Оберіть марку.
+          
+          .col-md-4.mb-3
+            = f.label :model_id, 'Модель'
+            = f.collection_select :model_id, Model.where(mark_id: f.object.mark_id).order(name: :asc), :id, :name, { include_blank: 'Оберіть модель' }, { class: 'custom-select d-block w-100', required: :required }
+            .invalid-feedback
+              | Оберіть модель.
+          
+          .col-md-5.mb-3
+            = f.label :name, 'Версія (Avant|Limited|Elegance)'
+            = f.text_field :name, class: 'form-control'
+
+        .row
+          .col-md-4.mb-3
+            = f.label :vehicle_type, 'Категорія'
+            = f.select :vehicle_type, @vehicle_types, { include_blank: 'Категорія' }, { class: 'custom-select d-block w-100', required: :required }
+          .col-md-4.mb-3
+            = f.label :body_type, 'Тип кузова'
+            = f.select :body_type, @body_types, { include_blank: 'Тип кузова' }, { class: 'custom-select d-block w-100', required: :required }
+          .col-md-4.mb-3
+            = f.label :state, 'Статус'
+            = f.select :state, @states, { include_blank: 'Статус' }, { class: 'custom-select d-block w-100', required: :required }
+        .row.mb-4
+          .col-12.mb-3
+            = f.label :text, 'Опис'
+            = f.text_area :text, class: 'form-control ckeditor'
+          .col-12.mb-3
+            = f.label :video, 'Посилання на відео'
+            .description-link.d-flex.align-items-center
+              p.m-0.mr-1 Натисніть 
+              span.mr-1.text-success "Поділитися"
+              p.m-0.mr-1 далі
+              p.m-0.mr-1.text-success "Вбудувати"
+              span.mr-1 скопіюйте все і вставте тут!
+            = f.text_area :video, rows: '3', class: 'form-control'
+
+        .row.mb-4
+          .col-5
+            h5.mb-3.font-weight-bold Характеристики
+            .row
+              .col-md-12.mb-3
+                = f.label :year, 'Рік випуску'
+                = f.select :year, @years_range, { include_blank: 'Рік випуску' }, { class: 'custom-select d-block w-100', required: :required }
+            .row
+              .col-md-12.mb-3
+                = f.label :fuel_type, 'Паливо'
+                = f.select :fuel_type, @fuel_types, { include_blank: 'Паливо' }, { class: 'custom-select d-block w-100', required: :required }
+            .row
+              .col-md-12.mb-3
+                = f.label :engine_capacity, "Об'єм двигуна"
+                = f.select :engine_capacity, @engine_capacities, { include_blank: "Об'єм двигуна" }, { class: 'custom-select d-block w-100', required: :required }   
+            .row
+              .col-md-12.mb-3
+                = f.label :gearbox_type, 'Трансміссія'
+                = f.select :gearbox_type, @gearbox_types, { include_blank: 'Трансміссія' }, { class: 'custom-select d-block w-100', required: :required }
+            .row
+              .col-md-12.mb-3
+                = f.label :drive_type, 'Привід'
+                = f.select :drive_type, @drive_types, { include_blank: 'Привід' }, { class: 'custom-select d-block w-100', required: :required } 
+            .row
+              .col-md-7.col-6.mb-3
+                = f.label :color, 'Колір'
+                = f.select :color, @colors, { include_blank: 'Колір' }, { class: 'custom-select d-block w-100', required: :required }
+              .col-md-2.col-6.mb-3  
+                .custom-control.custom-checkbox style='margin-top: 35px;'
+                  = f.check_box :metallic, class: 'custom-control-input'
+                  = f.label :metallic, 'Металік', class: 'custom-control-label'
+            .row
+              .col-md-12.mb-3
+                = f.label :doors_number, 'Дверей'
+                = f.select :doors_number, @doors_numbers, { include_blank: 'Дверей' }, { class: 'custom-select d-block w-100', required: :required } 
+            .row
+              .col-md-12.mb-3
+                = f.label :seats_number, 'Місць'
+                = f.text_field :seats_number, class: 'form-control'
+            .row
+              .col-md-12.mb-3
+                = f.label :mileage, 'Пробіг'
+                = f.number_field :mileage, placeholder: 'Пробіг', class: 'form-control'
+          .col-7
+            h5.mb-3.font-weight-bold Прайс
+            .row
+              .col-md-12.mb-3
+                = f.label :price_abroad, 'Вартість за кордоном'
+                = f.number_field :price_abroad, placeholder: 'Вартість за кордоном', class: 'form-control'
+            .row
+              .col-md-12.mb-3
+                = f.label :price, 'Вартість в Україні'
+                = f.number_field :price, placeholder: 'Вартість в Україні', class: 'form-control'
+            h5.mb-3.font-weight-bold Головне фото
+            .row
+              .col-md-12.mb-3
+                a#cover_button style="cursor:pointer"
+                  - if @car.cover.exists?
+                    = image_tag @car.cover.url(:show), class: 'img-fluid'
+                  - else
+                    = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid'
+            
+            h5.mb-3.font-weight-bold Налаштування публікації
+            .row
+              .col-md-12.mb-3
+                .custom-control.custom-switch
+                  = f.check_box :published, class: 'custom-control-input'
+                  = f.label :published, 'Публікувати', class: 'custom-control-label'
+            .row
+              .col-md-12.mb-3
+                .custom-control.custom-switch
+                  = f.check_box :promo, class: 'custom-control-input'
+                  = f.label :promo, 'Виділити як промо', class: 'custom-control-label'
+            .row
+              .col-md-12.mb-3
+                .custom-control.custom-switch
+                  = f.check_box :in_ukraine, class: 'custom-control-input'
+                  = f.label :in_ukraine, 'В Україні?', class: 'custom-control-label'
+            .row
+              .col-md-12.mb-3
+                = f.label :label_status, 'Стан'
+                = f.select :label_status, @label_statuses, { include_blank: 'Стан' }, { class: 'custom-select d-block w-100', required: :required }
+        hr.mb-4
+        .row
+          .col-md-6.mb-3
+            .btn-group
+              = f.submit 'Зберегти', class: 'btn btn-primary btn-md'
+              = link_to 'Скасувати', admin_cars_path, class: 'btn btn-md btn-outline-danger ml-2'  
+
+      .col-md-4.mb-4
+        h5.d-flex.justify-content-between.align-items-center.mb-3.font-weight-bold Калькулятор витрат
+        ul.list-group.mb-3
+          li.list-group-item.d-flex.justify-content-between.lh-condensed
+            div
+              h6.my-0.font-weight-bold Ввізне мито
+              small.text-muted#importFeeText
+                = @car.decorate.import_fee_text
+            span.text-muted#importFeeValue 0
+            = f.hidden_field :import_fee
+          
+          li.list-group-item.d-flex.justify-content-between.lh-condensed
+            div
+              h6.my-0.font-weight-bold Акцизне мито
+              small.text-muted#exciseFeeText
+                = @car.decorate.excise_fee_text
+            span.text-muted#exciseFeeValue 0
+            = f.hidden_field :excise_fee
+          
+          li.list-group-item.d-flex.justify-content-between.lh-condensed
+            div
+              h6.my-0.font-weight-bold ПДВ
+              small.text-muted#vatFeeText
+                |20% від вартості та мита
+            span.text-muted#vatFeeValue 0
+            = f.hidden_field :vat_fee
+    
+          li.list-group-item.d-flex.justify-content-between.border-bottom-0
+            span.font-weight-bold Додаткові витрати
+          / private_fees 1, 2, 3, 4, 5
+          - %w[1 2 3 4 5].each do |fee_index|
+            li.list-group-item.d-flex.justify-content-between.lh-condensed.border-bottom-0
+              .form-group.w-100.my-0
+                = f.number_field "private_fee_#{fee_index}".to_sym, class: 'form-control form-control-sm private-fee'
+          li.list-group-item.d-flex.justify-content-between.bg-light
+            span.font-weight-bold Усього
+            strong#totalFeeText #{@car.result_fee} €
+            = f.hidden_field :result_fee
+        h5.mb-3.font-weight-bold SEO
+        .row
+          .col-md-12.mb-3
+            = f.label :seo_title, 'title'
+            span.text-muted.font-size-13.ml-2
+              |(макс. 37 символ)
+            = f.text_field :seo_title, class: 'form-control'
+        .row
+          .col-md-12.mb-3
+            = f.label :seo_description, 'description'
+            span.text-muted.font-size-13.ml-2
+              |(мін. 120, макс. 320 символів)
+            = f.text_area :seo_description, class: 'form-control', rows: 7

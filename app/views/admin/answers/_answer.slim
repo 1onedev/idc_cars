@@ -1,0 +1,13 @@
+tr data-id="#{ answer.id }"
+  td 
+    = answer.position
+  td 
+    = answer.question
+  td 
+    = answer.text
+  td
+    .pull-right
+      = link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_answer_path(answer)
+  td
+    .pull-right
+      = link_to "<i class='fa fa-times icon-danger '></i>".html_safe, [:admin, answer],  method: :delete, data: { confirm: 'Удалить?' }

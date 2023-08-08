@@ -1,0 +1,15 @@
+tr
+  td
+    = image_tag album.cover.url(:thumb), width: 100, class: 'img-fluid'
+  td
+    = link_to album.name, admin_album_path(album)
+  td
+    = album.description
+  td 
+    = album.created_at.strftime('%d.%m.%Y %H:%M')
+  td
+    .pull-right
+      = link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_album_path(album)
+  td
+    .pull-right
+      = link_to "<i class='fa fa-times icon-danger '></i>".html_safe, [:admin, album],  method: :delete, data: { confirm: 'Удалить?' }

@@ -1,0 +1,41 @@
+.container
+  .row
+    .col-md-12.mb-3
+      .pull-left
+        h2 Слайд
+      .pull-right
+        .btn-group
+          = link_to 'Редагувати', edit_admin_slide_path(@slide), class: 'btn btn-primary btn-md'
+          = link_to 'Видалити', admin_slide_path(@slide), method: :delete, class: 'btn btn-md btn-outline-danger ml-2', data: { confirm: 'Видалити слайд?' }
+  .row
+    .col-5
+      h5.mb-3.font-weight-bold Загальні
+      .row
+        .col-md-12.mb-3
+          label Заголовок слайду
+          h4
+            = @slide.first_title
+      .row
+        .col-md-12.mb-3
+          label Підзаголовок слайду
+          h4
+            = @slide.second_title
+      .row
+        .col-md-12.mb-3
+          label Текст кнопки
+          h4
+            = @slide.button_title
+      .row
+        .col-md-12.mb-3
+          label Посилання кнопки
+          h4
+            = @slide.button_url
+      hr.mb-4
+    .col-7
+      h5.mb-3.font-weight-bold Зображення
+      .row
+        .col-md-12.mb-3
+          - if @slide.image.exists?
+            = image_tag @slide.image.url(:index), class: 'img-fluid'
+          - else
+            = image_tag 'admin/car-placeholder.jpg', class: 'img-fluid' 

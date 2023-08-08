@@ -1,0 +1,28 @@
+.sub-banner3
+  .sub-banner-overlay
+  .container.breadcrumb-area
+    .breadcrumb-areas
+      h1 Доставлено
+      ul.breadcrumbs
+        li
+          = link_to 'Головна', root_path
+        li.active Доставлено
+
+.blog-body.content-area
+  .container
+    .row
+      - @albums.each do |album|
+        .col-lg-4.col-md-6
+          .blog-4
+            = link_to album
+              .blog-photo
+                = image_tag album.cover.url(:thumb), class: 'img-fluid'
+                .date-box-2
+                  = l album.created_at.to_date, format: :short
+            .detail
+              h3
+                = link_to album.name, album
+      
+    .pagination-box.text-center
+      nav aria-label="Page navigation"
+        = paginate @albums

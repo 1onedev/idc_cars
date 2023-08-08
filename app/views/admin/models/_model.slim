@@ -1,0 +1,9 @@
+tr
+  td 
+    = model.name
+  td 
+    = model.mark&.name
+  td
+    .pull-right
+      = link_to "<i class='fa fa-pencil'></i>".html_safe, edit_admin_model_path(model), class: 'hidden-controls mr-3'
+      = link_to "<i class='fa fa-times icon-danger '></i>".html_safe, [:admin, model],  method: :delete, data: { confirm: 'Удалить?' }, class: 'hidden-controls'

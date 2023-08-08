@@ -1,0 +1,87 @@
+.sub-banner5
+  .sub-banner-overlay
+  .container.breadcrumb-area
+    .breadcrumb-areas
+      h1 Контакти
+      ul.breadcrumbs
+        li
+          = link_to 'Головна', root_path
+        li.active Контакти
+
+.contact-2.content-area-5
+  .container
+
+    .main-title.text-center
+      h1 Контактна інформація
+
+    .contact-info
+      .row
+        .col-md-4.col-sm-6.mrg-btn-50
+          i.flaticon-pin
+          h5 Офіс
+          p м. Вінниця, Street adr
+        / .col-md-3.col-sm-6.mrg-btn-50
+        /   i.flaticon-phone
+        /   h5 Телефон
+        /   p 
+        /     a href="tel:+111111111" +111111111
+        /   p
+        /     a href="tel:+111111111" +111111111
+        .col-md-4.col-sm-6.mrg-btn-50
+          i.flaticon-mail
+          h5 Email
+          a href="mailto:info@mysite.com" info@mysite.com
+        .col-md-4.col-sm-12.mrg-btn-50
+          i.fab.fa-instagram-square
+          h5 Instagram
+          p @mysite
+    = form_for Message.new, remote: true do |f|
+      .row
+        .col-lg-7
+          .row
+            .col-md-6.text-left
+              .form-group.name
+                = f.text_field :name, class: 'form-control', placeholder: "Ім'я", required: 'required'
+            .col-md-6
+              .form-group.email
+                = f.email_field :email, class: 'form-control', placeholder: 'Email', required: 'required'
+            .col-md-6
+              .form-group.subject
+                = f.text_field :subject, class: 'form-control', placeholder: 'Тема'
+            .col-md-6
+              .form-group.number
+                = f.text_field :phone, class: 'form-control', placeholder: 'Телефон'
+            .col-md-12
+              .form-group.message
+                = f.text_area :text, class: 'form-control', placeholder: 'Текст повідомлення', required: 'required'
+            .col-md-12
+              .send-btn.text-center
+                = f.button 'Надіслати', class: 'btn btn-md button-theme', data: { 'disable-with' => '...' }, id: 'new_message_send'
+        .col-lg-5
+          .opening-hours
+            h3 Графік роботи
+            ul.list-style-none
+              li
+                strong Понеділок
+                span 10:00 - 19:00
+              li
+                strong Вівторок
+                span 10:00 - 19:00
+              li
+                strong Середа
+                span 10:00 - 19:00
+              li
+                strong Четвер
+                span 10:00 - 19:00
+              li
+                strong П'ятниця
+                span 10:00 - 19:00
+              li
+                strong Субота
+                span.text-red style='color: red' зачинено
+              li
+                strong Неділя
+                span.text-red style='color: red' зачинено
+
+.map-google-2
+  iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2605.3519567301582!2d28.495325115687677!3d49.231815979325866!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x472d5b1480c334cd%3A0x95cf9fb77fc4266a!2z0YPQuy4g0JHRgNCw0YbQu9Cw0LLRgdC60LDRjywgMzUsINCS0LjQvdC90LjRhtCwLCDQktC40L3QvdC40YbQutCw0Y8g0L7QsdC70LDRgdGC0YwsIDIxMDAw!5e0!3m2!1sru!2sua!4v1611185820421!5m2!1sru!2sua" frameborder="0" style="border:0;" allowfullscreen=""

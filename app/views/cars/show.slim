@@ -1,0 +1,268 @@
+.sub-banner6
+  .sub-banner-overlay2
+    .container.breadcrumb-area
+      .breadcrumb-areas
+        h1
+          = @car.mark.name
+          =< @car.model_name
+          |,
+          =< @car.year
+        ul.breadcrumbs
+          li
+            = link_to 'Головна', root_path
+          li.active
+            = @car.mark.name
+            =< @car.model_name
+            |,
+            =< @car.year
+
+.car-details-page.content-area
+  .container
+    .row
+      .col-lg-8.col-md-12.col-xs-12
+        .car-details-section
+          #carDetailsSlider.carousel.car-details-sliders.slide.slide-2
+            .carousel-inner.car-thumbnail
+              .active.item.carousel-item data-slide-number="0" 
+                = image_tag @car.cover.url(:show), class: 'img-fluid'
+              .carbox-overlap-wrapper
+                .overlap-box
+                  .overlap-btns-area
+                    .car-magnify-gallery
+                      = link_to image_path(@car.cover.url(:show)), class: 'overlap-btn', data: { 'sub-html' => @car.decorate.popup_description }
+                        i.fa.fa-expand
+                        = image_tag @car.cover.url(:thumb), class: 'hidden'
+                      - @car.images.each do |image|
+                        = link_to image_path(image.file.url(:show)), class: 'hidden', data: { 'sub-html' => @car.decorate.popup_description }
+                          = image_tag image.file.url(:thumb), class: 'hidden'
+              - @car.images.each_with_index do |image, index|
+                .item.carousel-item data-slide-number="#{index+1}"
+                  = image_tag image.file.url(:show), class: 'img-fluid'                    
+            a data-slide="prev" href="#carDetailsSlider" role="button" 
+              .slick-prev.slick-arrow-buton
+                i.fa.fa-angle-left
+            a data-slide="next" href="#carDetailsSlider" role="button" 
+              .slick-next.slick-arrow-buton
+                i.fa.fa-angle-right
+
+
+            ul.carousel-indicators.car-properties.list-inline.nav.nav-justified
+              li.list-inline-item.active
+                a#carousel-selector-0.selected data-slide-to="0" data-target="#carDetailsSlider" 
+                  = image_tag @car.cover.url(:thumb), class: 'img-fluid'
+              - @car.images.each_with_index do |image, index|
+                li.list-inline-item
+                  a id="carousel-selector-#{index+1}" data-slide-to="#{index+1}" data-target="#carDetailsSlider" 
+                    = image_tag image.file.url(:thumb), class: 'img-fluid'
+          .d-lg-none.d-xl-none.price-2.mb-3
+            = number_to_usd @car.price
+          .d-lg-none.d-xl-none.mb-4
+            =< label_status_tag(@car)
+          .widget-2.advanced-search.bg-grea-2.d-lg-none.d-xl-none
+            h3.sidebar-title
+              |Зв'язатися
+            ul
+              li
+                span
+                  |Адреса
+                = link_to 'м. Вінниця, Street adr', contacts_path
+              / li
+              /   span
+              /     |Номер телефону
+              /   a href="tel:+111111111" +111111111
+              / li
+              /   a href="tel:+111111111" +111111111
+          .widget-2.advanced-search.bg-grea-2.d-lg-none.d-xl-none
+            h3.sidebar-title
+              | Характеристики
+            ul
+              li
+                span
+                  |Марка
+                = @car.mark.name
+              li
+                span
+                  |Модель
+                = @car.model_name
+              - if @car.name.present?
+                li
+                  span
+                    |Версія
+                  = @car.name
+              li
+                span
+                  |Тип кузова
+                =< t("body_type.#{@car.body_type}")
+              li
+                span 
+                  |Рік
+                = @car.year
+              li
+                span
+                  |Стан
+                =< t("state.#{@car.state}")
+              li
+                span
+                  |Пробіг
+                = number_to_km @car.mileage
+              li
+                span
+                  |Колір
+                =< t("color.#{@car.color}")
+              li
+                span
+                  |Трансмісія
+                =< t("gearbox_type.#{@car.gearbox_type}")
+              li
+                span
+                  |Двигун
+                = @car.engine_capacity
+                =< t("fuel_type.#{@car.fuel_type}")
+
+          .Description.mb-50
+            h3.heading-2 
+              |Опис
+            p 
+              = @car.text.try(:html_safe)
+
+          .car-amenities.mb-30
+            h3.heading-2 Специфікація
+            .row
+              .col-lg-6.col-md-4.col-sm-6.col-xs-12
+                ul.amenities
+                  li
+                    i.fa.fa-check
+                    |Тип пального:
+                    =< t("fuel_type.#{@car.fuel_type}")
+                  li
+                    i.fa.fa-check
+                    |Пробіг: 
+                    =< number_to_km @car.mileage
+                  li
+                    i.fa.fa-check
+                    |Об'єм двигуна:
+                    =< @car.engine_capacity
+                  li
+                    i.fa.fa-check
+                    |Привід:
+                    =< t("drive_type.#{@car.drive_type}")
+              .col-lg-6.col-md-6.col-sm-4.col-xs-12
+                ul.amenities
+                  li
+                    i.fa.fa-check
+                    |Категорія:
+                    =< t("vehicle_type.#{@car.vehicle_type}")
+                  li
+                    i.fa.fa-check
+                    |Тип кузова:
+                    =< t("body_type.#{@car.body_type}")
+                  li
+                    i.fa.fa-check
+                    |Кількість дверей:
+                    =< @car.doors_number
+                  li
+                    i.fa.fa-check
+                    |Кількість місць:
+                    =< @car.seats_number
+          .need-like.mb-30
+            hr
+            h3.heading-2.margin-bottom-5 Хочу таку ж! Але з іншими специфікаціями!
+            | Якщо вам не підійшов якийсь із параметрів - ми підберемо вам іншу, схожу машину!
+
+            = form_for Message.new, remote: true, html: { class: 'form-inline margin-top-10' } do |f|
+              = hidden_field_tag :car, @car.slug
+              = f.text_field :title, class: 'form-control mb-sm-0', placeholder: 'Номер телефону', required: 'required'
+              = f.button class: 'btn'
+                i.fa.fa-paper-plane
+            hr
+
+          .inside-car.mb-50
+            h3.heading-2 Огляд
+            = @car.video.try(:html_safe)
+
+      .col-lg-4.col-md-12
+        .price-2.mb-3.d-none.d-xl-block.d-lg-block
+          = number_to_usd @car.price
+        .d-none.d-xl-block.d-lg-block.mb-3
+          =< label_status_tag(@car)
+        .sidebar-right#info-for-bayer-cars
+          .widget.advanced-search.d-none.d-xl-block.d-lg-block
+            h3.sidebar-title
+              |Зв'язатися
+            ul
+              li
+                span
+                  |Адреса
+                = link_to 'м. Вінниця, Street adr', contacts_path
+              / li
+              /   span
+              /     |Номер телефону
+              /   a href="tel:+111111111" +111111111
+              / li
+              /   a href="tel:+111111111" +111111111
+        .sidebar-right
+          .widget.advanced-search.d-none.d-xl-block.d-lg-block
+            h3.sidebar-title
+              |Характеристики
+            ul
+              li
+                span
+                  |Марка
+                = @car.mark.name
+              li
+                span
+                  |Модель
+                = @car.model_name
+              - if @car.name.present?
+                li
+                  span
+                    |Версія
+                  = @car.name
+              li
+                span
+                  |Тип кузова
+                =< t("body_type.#{@car.body_type}")
+              li
+                span 
+                  |Рік
+                = @car.year
+              li
+                span
+                  |Стан
+                =< t("state.#{@car.state}")
+              li
+                span
+                  |Пробіг
+                = number_to_km @car.mileage
+              li
+                span
+                  |Колір
+                =< t("color.#{@car.color}")
+              li
+                span
+                  |Трансмісія
+                =< t("gearbox_type.#{@car.gearbox_type}")
+              li
+                span
+                  |Двигун
+                = @car.engine_capacity
+                =< t("fuel_type.#{@car.fuel_type}")
+          .widget.advanced-search.d-none.d-xl-block.d-lg-block
+            h4 Залишити заявку
+            .Subscribe-box
+              p Якщо Вас зацікавило дане авто, ви можете залишити заявку і ми зв'яжемось з вами
+              
+              = form_for Message.new, url: car_messages_path(@car), remote: true, html: { class: 'form-inline need-this', id: 'new_car_message' } do |f|
+                = f.text_field :text, class: 'form-control mb-sm-0', placeholder: 'Номер телефону'
+                = f.button 'Надіслати', class: 'btn', id: 'new_car_message_send'
+
+
+    #el.related-cars
+      h3.heading-2 Рекомендуємо
+      .slick-slider-area.clearfix
+        .row.slick-carousel data-slick="#{@promo_slick_settings.to_json}" 
+          = render collection: @promo_cars, partial: 'home/promo_cars', as: :car
+        .slick-prev.slick-arrow-buton
+          i.fa.fa-angle-left
+        .slick-next.slick-arrow-buton
+          i.fa.fa-angle-right

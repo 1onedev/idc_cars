@@ -1,0 +1,22 @@
+.container
+  .row
+    .col-md-12.mb-3
+      .pull-left
+        h2 FAQ
+      .pull-right
+        .btn-group
+          = link_to 'Редагувати', edit_admin_answer_path(@answer), class: 'btn btn-primary btn-md'
+          = link_to 'Видалити', admin_answer_path(@answer), method: :delete, class: 'btn btn-md btn-outline-danger ml-2', data: { confirm: 'Видалити?' }
+  .row
+    .col-6
+      .row
+        .col-md-12.mb-3
+          label Запитання
+          h4
+            = @answer.question
+      .row
+        .col-md-12.mb-3
+          label Відповідь
+          p
+            = @answer.text
+      hr.mb-4
