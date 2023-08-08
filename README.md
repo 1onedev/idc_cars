@@ -1,5 +1,5 @@
 # IDC Cars
-![/my badge/](https://badgen.net/badge/status/finished/green) ![/my badge/](https://badgen.net/badge/RubyOnRails/2.6.3/red)
+![/my badge/](https://badgen.net/badge/status/finished/green) ![/my badge/](https://badgen.net/badge/RubyOnRails/2.6.5/red)
 
 IDC Cars is a comprehensive web application that enables users to browse, order, and purchase cars online. The platform also includes an administrative and managerial system, empowering administrators and managers to effortlessly manage inventory, update pricing, and maintain descriptions.
 
